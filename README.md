@@ -28,7 +28,7 @@ Para probar que todo se instaló y compiló correctamente:
 * roslaunch eir2023 navigation_no_obstacles.launch
 
 Deberá aparecer un simulador como el siguiente:
-<img src="https://github.com/hector-aviles/CodigosEIR22-23/blob/main/Media/rviz.png" alt="RViz" width="640"/>
+<img src="https://github.com/hector-aviles/CodigosEIR22-23/blob/main/Media/Webots.png" alt="RViz" width="640"/>
 
 ## Tópicos relevantes
 
