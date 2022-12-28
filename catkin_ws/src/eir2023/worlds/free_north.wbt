@@ -66,8 +66,8 @@ WorldInfo {
   ]
 }
 Viewpoint {
-  orientation -0.573416161834862 -0.5670438167517 0.5913165101958848 4.208026619107559
-  position 17.29569617918376 22.841360757628607 147.28468319514664
+  orientation -0.5403105959915346 -0.5447003583744373 0.6413781875352734 4.298224221574804
+  position 16.81583387434641 43.081079986161924 144.34489663455054
   near 1
   follow "vehicle"
   lensFlare LensFlare {
@@ -93,7 +93,7 @@ Floor {
   }
 }
 BmwX5 {
-  translation 10.003107562028891 -1.5000000000000666 0.4969701306177328
+  translation 10.2831 -1.5 0.498221
   rotation -9.135379245293787e-15 -1 1.7544986643064575e-12 0.004488380251354504
   color 0.643137 0 0
   controller "bmw_x5_controller"
@@ -437,4 +437,20 @@ HighwayPole {
       ]
     }
   ]
+}
+DEF obstacle_north_west CitroenCZeroSimple {
+  translation 40.55 1.95 0.4
+  name "obstacle_north_west"
+}
+DEF obstacle_west LincolnMKZSimple {
+  translation 28.51 1.77 0.4
+  name "vehicle(1)"
+}
+DEF obstacle_south_west RangeRoverSportSVRSimple {
+  translation 16.78 1.67 0
+  name "vehicle(2)"
+}
+Robot {
+  controller "supervisor_free_north"
+  supervisor TRUE
 }
