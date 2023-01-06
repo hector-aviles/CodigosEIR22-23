@@ -14,6 +14,7 @@
   <node name="lane_tracker"  pkg="eir2023" type="lane_tracking_control_P.py"   output="screen">
     <param name="max_speed" value="$(arg max_speed)"/>
   </node>
+  <node name="obstacle_detector" pkg="eir2023" type="obstacle_detector.py" output="screen"/>
 
   <node pkg="tf" type="static_transform_publisher" name="car_to_lidar"  args="  0 0 2.0 0 0 0 car_link lidar_link 30"/>
   <node pkg="tf" type="static_transform_publisher" name="car_to_camera" args="1.2 0 1.5 0 0 0 car_link camera_link 30"/>
