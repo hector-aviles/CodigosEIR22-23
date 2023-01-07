@@ -29,16 +29,20 @@ def callback_obstacle_south_west(msg):
     global obstacle_south_west
     obstacle_south_west = msg.data
 
-def enable_steady_motion(enable):
+def enable_steady_motion():
     global pub_steady_motion
-    pub_steady_motion.publish(enable)
+    pub_steady_motion.publish(True)
+    pub_follow_car.publish(False)
 
-def enable_follow_car(enable):
+def enable_follow_car():
     global pub_follow_car
-    pub_follow_car.publish(enable)
+    pub_follow_car.publish(True)
+    pub_steady_motion.publish(False)
 
 def execute_passing():
     global pub_start_passing
+    pub_steady_motion.publish(False)
+    pub_follow_car.publish(False)
     pub_start_passing.publish(True)
     msg_finished = rospy.wait_for_message('/passing/finished', Empty, timeout=10.0)
 
@@ -64,17 +68,13 @@ def main():
         pub_start_signal.publish()
         if obstacle_north and not obstacle_north_west and not obstacle_west:
             print("Executing passing")
-            enable_follow_car(False)
-            enable_steady_motion(False)
             execute_passing()
         elif obstacle_north:
             print("Obstacle north")
-            enable_follow_car(True)
-            enable_steady_motion(False)
+            enable_follow_car()
         else:
             print("Free north")
-            enable_follow_car(False)
-            enable_steady_motion(True)
+            enable_steady_motion()
         rate.sleep()
     
 
