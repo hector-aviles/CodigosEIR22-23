@@ -438,19 +438,11 @@ HighwayPole {
     }
   ]
 }
-DEF obstacle_north_west CitroenCZeroSimple {
-  translation 40.55 1.95 0.4
-  name "obstacle_north_west"
-}
-DEF obstacle_west LincolnMKZSimple {
-  translation 28.51 1.77 0.4
-  name "vehicle(1)"
-}
-DEF obstacle_south_west RangeRoverSportSVRSimple {
-  translation 16.78 1.67 0
-  name "vehicle(2)"
+DEF obstacle_north RangeRoverSportSVRSimple {
+  translation 41.18 -1.81 0
+  name "vehicle(3)"
 }
 Robot {
-  controller "supervisor_free_north"
+  controller "supervisor_eir"
   supervisor TRUE
 }

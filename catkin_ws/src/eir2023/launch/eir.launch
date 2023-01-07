@@ -1,13 +1,14 @@
 <?xml version="1.0"?>
 <launch>
-  <arg name="max_speed" default="60"/>
+  <arg name="max_speed" default="50"/>
+  <arg name="world" default="15"/>
   <env name="WEBOTS_HOME" value="/usr/local/webots"/>
   <arg name="no_gui" default="false," doc="Start Webots with minimal GUI"/>
   
   <include file="$(find webots_ros)/launch/webots.launch">
     <arg name="mode" value="realtime"/>
     <arg name="no_gui" value="$(arg no_gui)"/>
-    <arg name="world" value="$(find eir2023)/worlds/free_north.wbt"/>
+    <arg name="world" value="$(find eir2023)/worlds/world_$(arg world).wbt"/>
   </include>
 
   <node name="lane_detector" pkg="eir2023" type="lane_detector_canny_hough.py" output="screen"/>
@@ -15,6 +16,7 @@
     <param name="max_speed" value="$(arg max_speed)"/>
   </node>
   <node name="obstacle_detector" pkg="eir2023" type="obstacle_detector.py" output="screen"/>
+  <node name="passing" pkg="eir2023" type="pass.py" output="screen"/>
 
   <node pkg="tf" type="static_transform_publisher" name="car_to_lidar"  args="  0 0 2.0 0 0 0 car_link lidar_link 30"/>
   <node pkg="tf" type="static_transform_publisher" name="car_to_camera" args="1.2 0 1.5 0 0 0 car_link camera_link 30"/>

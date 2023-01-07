@@ -13,25 +13,68 @@ import ros_numpy
 from std_msgs.msg import Float64MultiArray, Empty, Bool
 from sensor_msgs.msg import PointCloud2
 
-def check_obstacle_north():
-    return rospy.wait_for_message("/obstacle/north", Bool, timeout=1.0).data
+def callback_obstacle_north(msg):
+    global obstacle_north
+    obstacle_north = msg.data
 
-def check_obstacle_north_west():
-    return rospy.wait_for_message("/obstacle/north_west", Bool, timeout=1.0).data
+def callback_obstacle_north_west(msg):
+    global obstacle_north_west
+    obstacle_north_west = msg.data
 
-def check_obstacle_west():
-    return rospy.wait_for_message("/obstacle/west", Bool, timeout=1.0).data
+def callback_obstacle_west(msg):
+    global obstacle_west
+    obstacle_west = msg.data
 
-def check_obstacle_south_west():
-    return rospy.wait_for_message("/obstacle/south_west", Bool, timeout=1.0).data
+def callback_obstacle_south_west(msg):
+    global obstacle_south_west
+    obstacle_south_west = msg.data
+
+def enable_steady_motion(enable):
+    global pub_steady_motion
+    pub_steady_motion.publish(enable)
+
+def enable_follow_car(enable):
+    global pub_follow_car
+    pub_follow_car.publish(enable)
+
+def execute_passing():
+    global pub_start_passing
+    pub_start_passing.publish(True)
+    msg_finished = rospy.wait_for_message('/passing/finished', Empty, timeout=10.0)
 
 def main():
-    global pub_obs_N, pub_obs_NW, pub_obs_W, pub_obs_SW
-    print("INITIALIZING OBSTACLE DETECTOR...")
+    global obstacle_north, obstacle_north_west, obstacle_west, obstacle_south_west
+    global pub_follow_car, pub_steady_motion, pub_start_passing
+    print("INITIALIZING POLICY...")
     rospy.init_node("policy")
+    rospy.Subscriber("/obstacle/north"     , Bool, callback_obstacle_north)
+    rospy.Subscriber("/obstacle/north_west", Bool, callback_obstacle_north_west)
+    rospy.Subscriber("/obstacle/west"      , Bool, callback_obstacle_west)
+    rospy.Subscriber("/obstacle/south_west", Bool, callback_obstacle_south_west)
+    pub_start_signal  = rospy.Publisher("/start", Empty, queue_size=10)
+    pub_steady_motion = rospy.Publisher("/steady_motion/enable", Bool, queue_size=10)
+    pub_follow_car    = rospy.Publisher("/follow/enable", Bool, queue_size=10)
+    pub_start_passing = rospy.Publisher("/passing/start", Bool, queue_size=10)
     rate = rospy.Rate(10)
-    
+    obstacle_north      = False
+    obstacle_north_west = False
+    obstacle_west       = False
+    obstacle_south_west = False
     while not rospy.is_shutdown():
+        pub_start_signal.publish()
+        if obstacle_north and not obstacle_north_west and not obstacle_west:
+            print("Executing passing")
+            enable_follow_car(False)
+            enable_steady_motion(False)
+            execute_passing()
+        elif obstacle_north:
+            print("Obstacle north")
+            enable_follow_car(True)
+            enable_steady_motion(False)
+        else:
+            print("Free north")
+            enable_follow_car(False)
+            enable_steady_motion(True)
         rate.sleep()
     
 

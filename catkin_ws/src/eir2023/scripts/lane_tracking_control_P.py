@@ -39,7 +39,7 @@ def calculate_control(rho_l, theta_l, rho_r, theta_r, goal_rho_l, goal_theta_l, 
     if dist is None:
         speed = max_speed*(1 - 1.5*abs(steering))
     else:
-        speed = 36 + 10*(9 - dist)
+        speed = 36 + 1.5*(dist - 20)
     return speed, steering
 
 def callback_left_lane(msg):

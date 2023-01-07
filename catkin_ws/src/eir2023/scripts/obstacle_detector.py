@@ -19,12 +19,12 @@ from sensor_msgs.msg import PointCloud2
 def callback_point_cloud(msg):
     xyz = ros_numpy.point_cloud2.pointcloud2_to_xyz_array(msg)
     xyz = xyz[(xyz[:,2] > -1.6) & (xyz[:,2] < 0.5) ] #Filters points on floor and higher points
-    obstacle_N_points  = xyz[(xyz[:,0] >  2.5) & (xyz[:,0] <   15) & (xyz[:,1] < 1.5) & (xyz[:,1] > -1.5)]
-    obstacle_NW_points = xyz[(xyz[:,0] >  4.5) & (xyz[:,0] <   15) & (xyz[:,1] < 5.0) & (xyz[:,1] >  1.5)]
+    obstacle_N_points  = xyz[(xyz[:,0] >  2.5) & (xyz[:,0] <   25) & (xyz[:,1] < 1.5) & (xyz[:,1] > -1.5)]
+    obstacle_NW_points = xyz[(xyz[:,0] >  4.5) & (xyz[:,0] <   25) & (xyz[:,1] < 5.0) & (xyz[:,1] >  1.5)]
     obstacle_W_points  = xyz[(xyz[:,0] > -4.5) & (xyz[:,0] <  4.5) & (xyz[:,1] < 5.0) & (xyz[:,1] >  1.5)]
     obstacle_SW_points = xyz[(xyz[:,0] >  -10) & (xyz[:,0] < -4.5) & (xyz[:,1] < 5.0) & (xyz[:,1] >  1.5)]
-    obstacle_N  = obstacle_N_points .shape[0] > 1000
-    obstacle_NW = obstacle_NW_points.shape[0] > 1000
+    obstacle_N  = obstacle_N_points .shape[0] > 500
+    obstacle_NW = obstacle_NW_points.shape[0] > 500
     obstacle_W  = obstacle_W_points .shape[0] > 1000
     obstacle_SW = obstacle_SW_points.shape[0] > 1000
     pub_obs_N .publish(obstacle_N )
