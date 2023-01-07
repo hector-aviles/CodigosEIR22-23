@@ -44,7 +44,7 @@ def execute_passing():
     pub_steady_motion.publish(False)
     pub_follow_car.publish(False)
     pub_start_passing.publish(True)
-    msg_finished = rospy.wait_for_message('/passing/finished', Empty, timeout=10.0)
+    msg_finished = rospy.wait_for_message('/passing/finished', Empty, timeout=100.0)
 
 def main():
     global obstacle_north, obstacle_north_west, obstacle_west, obstacle_south_west
@@ -66,6 +66,15 @@ def main():
     obstacle_south_west = False
     while not rospy.is_shutdown():
         pub_start_signal.publish()
+        #
+        # TODO:
+        # Code here the resulting policy
+        # You can use the variables obstacle_north, obstacle_north_west, obstacle_west and obstacle_south_west
+        # You can start the different behaviors with the functions:
+        # execute_passing()
+        # enable_steady_motion()
+        # enable_follow_car()
+        #
         if obstacle_north and not obstacle_north_west and not obstacle_west:
             print("Executing passing")
             execute_passing()
